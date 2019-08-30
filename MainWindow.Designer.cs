@@ -68,7 +68,7 @@
             // 
             // preferencesBtn
             // 
-            this.preferencesBtn.Location = new System.Drawing.Point(1075, 32);
+            this.preferencesBtn.Location = new System.Drawing.Point(1108, 29);
             this.preferencesBtn.Name = "preferencesBtn";
             this.preferencesBtn.Size = new System.Drawing.Size(111, 37);
             this.preferencesBtn.TabIndex = 0;
