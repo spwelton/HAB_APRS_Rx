@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="BalloonTracker.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="balloonCallSign" Type="System.String" Scope="User">
+      <Value Profile="(Default)">KD8SCK</Value>
+    </Setting>
+    <Setting Name="balloonSSID" Type="System.String" Scope="User">
+      <Value Profile="(Default)">11</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
