@@ -57,6 +57,8 @@
             this.label9 = new System.Windows.Forms.Label();
             this.maxAltBox = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
+            this.angularGauge1 = new LiveCharts.WinForms.AngularGauge();
+            this.solidGauge1 = new LiveCharts.WinForms.SolidGauge();
             this.positionGroup.SuspendLayout();
             this.velocityGroup.SuspendLayout();
             this.SuspendLayout();
@@ -338,11 +340,29 @@
             this.label10.TabIndex = 25;
             this.label10.Text = "Alt. MAX";
             // 
+            // angularGauge1
+            // 
+            this.angularGauge1.Location = new System.Drawing.Point(945, 265);
+            this.angularGauge1.Name = "angularGauge1";
+            this.angularGauge1.Size = new System.Drawing.Size(158, 194);
+            this.angularGauge1.TabIndex = 27;
+            this.angularGauge1.Text = "angularGauge1";
+            // 
+            // solidGauge1
+            // 
+            this.solidGauge1.Location = new System.Drawing.Point(945, 121);
+            this.solidGauge1.Name = "solidGauge1";
+            this.solidGauge1.Size = new System.Drawing.Size(200, 100);
+            this.solidGauge1.TabIndex = 28;
+            this.solidGauge1.Text = "solidGauge1";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1250, 585);
+            this.Controls.Add(this.solidGauge1);
+            this.Controls.Add(this.angularGauge1);
             this.Controls.Add(this.maxAltBox);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.intTempBox);
@@ -402,6 +422,8 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox maxAltBox;
         private System.Windows.Forms.Label label10;
+        private LiveCharts.WinForms.AngularGauge angularGauge1;
+        private LiveCharts.WinForms.SolidGauge solidGauge1;
     }
 }
 
