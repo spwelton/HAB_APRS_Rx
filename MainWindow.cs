@@ -29,6 +29,18 @@ namespace BalloonTracker
             balloonSSID = Properties.Settings.Default.balloonSSID;
             balloonAddrWSSID = balloonAddress + "-" + balloonSSID;
 
+            pressureGauge.From = 0;
+            pressureGauge.To = 1;
+
+            humidityGauge.From = 0;
+            humidityGauge.To = 100;
+
+            intTempGauge.From = -60;
+            intTempGauge.To = 60;
+
+            extTempGauge.From = -60;
+            extTempGauge.To = 60;
+
             TNCListener.RunWorkerAsync();
         }
 
@@ -216,10 +228,11 @@ namespace BalloonTracker
             speedBox.Text = dataPoint.Speed.ToString();
             altitudeBox.Text = dataPoint.Altitude.ToString();
             maxAltBox.Text = dataPoint.MaxAltitude.ToString();
-            pressureBox.Text = dataPoint.Pressure.ToString();
-            relHumidityBox.Text = dataPoint.RelativeHumidity.ToString();
-            intTempBox.Text = dataPoint.TemperatureIn.ToString();
-            extTempBox.Text = dataPoint.TemperatureOut.ToString();
+            // Convert the pressure units in Pa to atm and round to 2 decimal places.
+            pressureGauge.Value = Math.Round((dataPoint.Pressure / 101325.0),2);
+            humidityGauge.Value = (Double)dataPoint.RelativeHumidity;
+            intTempGauge.Value = dataPoint.TemperatureIn;
+            extTempGauge.Value = dataPoint.TemperatureOut;
             batteryVoltBox.Text = dataPoint.BatteryVoltage.ToString();
         }
     }

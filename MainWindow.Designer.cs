@@ -43,22 +43,20 @@
             this.label3 = new System.Windows.Forms.Label();
             this.timestampBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.pressureBox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.relHumidityBox = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.positionGroup = new System.Windows.Forms.GroupBox();
             this.velocityGroup = new System.Windows.Forms.GroupBox();
             this.batteryVoltBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.extTempBox = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.intTempBox = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.maxAltBox = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.angularGauge1 = new LiveCharts.WinForms.AngularGauge();
-            this.solidGauge1 = new LiveCharts.WinForms.SolidGauge();
+            this.pressureGauge = new LiveCharts.WinForms.SolidGauge();
+            this.humidityGauge = new LiveCharts.WinForms.SolidGauge();
+            this.intTempGauge = new LiveCharts.WinForms.SolidGauge();
+            this.extTempGauge = new LiveCharts.WinForms.SolidGauge();
             this.positionGroup.SuspendLayout();
             this.velocityGroup.SuspendLayout();
             this.SuspendLayout();
@@ -70,9 +68,9 @@
             // 
             // preferencesBtn
             // 
-            this.preferencesBtn.Location = new System.Drawing.Point(1108, 29);
+            this.preferencesBtn.Location = new System.Drawing.Point(745, 23);
             this.preferencesBtn.Name = "preferencesBtn";
-            this.preferencesBtn.Size = new System.Drawing.Size(111, 37);
+            this.preferencesBtn.Size = new System.Drawing.Size(206, 48);
             this.preferencesBtn.TabIndex = 0;
             this.preferencesBtn.Text = "Preferences";
             this.preferencesBtn.UseVisualStyleBackColor = true;
@@ -92,7 +90,7 @@
             // 
             this.longitudeLbl.AutoSize = true;
             this.longitudeLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.longitudeLbl.Location = new System.Drawing.Point(18, 89);
+            this.longitudeLbl.Location = new System.Drawing.Point(18, 87);
             this.longitudeLbl.Name = "longitudeLbl";
             this.longitudeLbl.Size = new System.Drawing.Size(98, 25);
             this.longitudeLbl.TabIndex = 2;
@@ -110,7 +108,7 @@
             // longitudeBox
             // 
             this.longitudeBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.longitudeBox.Location = new System.Drawing.Point(145, 86);
+            this.longitudeBox.Location = new System.Drawing.Point(145, 84);
             this.longitudeBox.Name = "longitudeBox";
             this.longitudeBox.ReadOnly = true;
             this.longitudeBox.Size = new System.Drawing.Size(214, 30);
@@ -162,7 +160,7 @@
             // altitudeBox
             // 
             this.altitudeBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.altitudeBox.Location = new System.Drawing.Point(145, 136);
+            this.altitudeBox.Location = new System.Drawing.Point(145, 132);
             this.altitudeBox.Name = "altitudeBox";
             this.altitudeBox.ReadOnly = true;
             this.altitudeBox.Size = new System.Drawing.Size(214, 30);
@@ -172,7 +170,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(18, 139);
+            this.label3.Location = new System.Drawing.Point(18, 135);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(77, 25);
             this.label3.TabIndex = 9;
@@ -197,43 +195,25 @@
             this.label4.TabIndex = 11;
             this.label4.Text = "Last Packet Received";
             // 
-            // pressureBox
-            // 
-            this.pressureBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pressureBox.Location = new System.Drawing.Point(166, 121);
-            this.pressureBox.Name = "pressureBox";
-            this.pressureBox.ReadOnly = true;
-            this.pressureBox.Size = new System.Drawing.Size(214, 30);
-            this.pressureBox.TabIndex = 14;
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(39, 124);
+            this.label5.Location = new System.Drawing.Point(39, 83);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(90, 25);
+            this.label5.Size = new System.Drawing.Size(141, 25);
             this.label5.TabIndex = 13;
-            this.label5.Text = "Pressure";
-            // 
-            // relHumidityBox
-            // 
-            this.relHumidityBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.relHumidityBox.Location = new System.Drawing.Point(166, 180);
-            this.relHumidityBox.Name = "relHumidityBox";
-            this.relHumidityBox.ReadOnly = true;
-            this.relHumidityBox.Size = new System.Drawing.Size(214, 30);
-            this.relHumidityBox.TabIndex = 16;
+            this.label5.Text = "Pressure (atm)";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(39, 183);
+            this.label6.Location = new System.Drawing.Point(281, 83);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(87, 25);
+            this.label6.Size = new System.Drawing.Size(124, 25);
             this.label6.TabIndex = 15;
-            this.label6.Text = "Humidity";
+            this.label6.Text = "Humidity (%)";
             // 
             // positionGroup
             // 
@@ -241,12 +221,14 @@
             this.positionGroup.Controls.Add(this.latitudeLbl);
             this.positionGroup.Controls.Add(this.longitudeLbl);
             this.positionGroup.Controls.Add(this.longitudeBox);
+            this.positionGroup.Controls.Add(this.maxAltBox);
+            this.positionGroup.Controls.Add(this.label10);
             this.positionGroup.Controls.Add(this.altitudeBox);
             this.positionGroup.Controls.Add(this.label3);
             this.positionGroup.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.positionGroup.Location = new System.Drawing.Point(461, 87);
+            this.positionGroup.Location = new System.Drawing.Point(550, 83);
             this.positionGroup.Name = "positionGroup";
-            this.positionGroup.Size = new System.Drawing.Size(401, 196);
+            this.positionGroup.Size = new System.Drawing.Size(401, 238);
             this.positionGroup.TabIndex = 17;
             this.positionGroup.TabStop = false;
             this.positionGroup.Text = "Position";
@@ -257,7 +239,7 @@
             this.velocityGroup.Controls.Add(this.label1);
             this.velocityGroup.Controls.Add(this.courseBox);
             this.velocityGroup.Controls.Add(this.label2);
-            this.velocityGroup.Location = new System.Drawing.Point(461, 312);
+            this.velocityGroup.Location = new System.Drawing.Point(550, 345);
             this.velocityGroup.Name = "velocityGroup";
             this.velocityGroup.Size = new System.Drawing.Size(401, 202);
             this.velocityGroup.TabIndex = 18;
@@ -267,7 +249,7 @@
             // batteryVoltBox
             // 
             this.batteryVoltBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.batteryVoltBox.Location = new System.Drawing.Point(166, 370);
+            this.batteryVoltBox.Location = new System.Drawing.Point(166, 519);
             this.batteryVoltBox.Name = "batteryVoltBox";
             this.batteryVoltBox.ReadOnly = true;
             this.batteryVoltBox.Size = new System.Drawing.Size(214, 30);
@@ -277,54 +259,36 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(39, 373);
+            this.label7.Location = new System.Drawing.Point(39, 522);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(117, 25);
             this.label7.TabIndex = 19;
             this.label7.Text = "Battery Volt.";
             // 
-            // extTempBox
-            // 
-            this.extTempBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.extTempBox.Location = new System.Drawing.Point(166, 238);
-            this.extTempBox.Name = "extTempBox";
-            this.extTempBox.ReadOnly = true;
-            this.extTempBox.Size = new System.Drawing.Size(214, 30);
-            this.extTempBox.TabIndex = 22;
-            // 
             // label8
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(39, 241);
+            this.label8.Location = new System.Drawing.Point(39, 281);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(99, 25);
+            this.label8.Size = new System.Drawing.Size(133, 25);
             this.label8.TabIndex = 21;
-            this.label8.Text = "Int. Temp.";
-            // 
-            // intTempBox
-            // 
-            this.intTempBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.intTempBox.Location = new System.Drawing.Point(166, 303);
-            this.intTempBox.Name = "intTempBox";
-            this.intTempBox.ReadOnly = true;
-            this.intTempBox.Size = new System.Drawing.Size(214, 30);
-            this.intTempBox.TabIndex = 24;
+            this.label8.Text = "Int. Temp. (C)";
             // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(39, 306);
+            this.label9.Location = new System.Drawing.Point(282, 281);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(106, 25);
+            this.label9.Size = new System.Drawing.Size(140, 25);
             this.label9.TabIndex = 23;
-            this.label9.Text = "Ext. Temp.";
+            this.label9.Text = "Ext. Temp. (C)";
             // 
             // maxAltBox
             // 
             this.maxAltBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.maxAltBox.Location = new System.Drawing.Point(166, 431);
+            this.maxAltBox.Location = new System.Drawing.Point(145, 180);
             this.maxAltBox.Name = "maxAltBox";
             this.maxAltBox.ReadOnly = true;
             this.maxAltBox.Size = new System.Drawing.Size(214, 30);
@@ -334,48 +298,57 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(39, 434);
+            this.label10.Location = new System.Drawing.Point(18, 183);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(90, 25);
             this.label10.TabIndex = 25;
             this.label10.Text = "Alt. MAX";
             // 
-            // angularGauge1
+            // pressureGauge
             // 
-            this.angularGauge1.Location = new System.Drawing.Point(945, 265);
-            this.angularGauge1.Name = "angularGauge1";
-            this.angularGauge1.Size = new System.Drawing.Size(158, 194);
-            this.angularGauge1.TabIndex = 27;
-            this.angularGauge1.Text = "angularGauge1";
+            this.pressureGauge.Location = new System.Drawing.Point(44, 111);
+            this.pressureGauge.Name = "pressureGauge";
+            this.pressureGauge.Size = new System.Drawing.Size(215, 140);
+            this.pressureGauge.TabIndex = 28;
             // 
-            // solidGauge1
+            // humidityGauge
             // 
-            this.solidGauge1.Location = new System.Drawing.Point(945, 121);
-            this.solidGauge1.Name = "solidGauge1";
-            this.solidGauge1.Size = new System.Drawing.Size(200, 100);
-            this.solidGauge1.TabIndex = 28;
-            this.solidGauge1.Text = "solidGauge1";
+            this.humidityGauge.Location = new System.Drawing.Point(287, 112);
+            this.humidityGauge.Name = "humidityGauge";
+            this.humidityGauge.Size = new System.Drawing.Size(215, 140);
+            this.humidityGauge.TabIndex = 29;
+            this.humidityGauge.Text = "solidGauge1";
+            // 
+            // intTempGauge
+            // 
+            this.intTempGauge.Location = new System.Drawing.Point(44, 309);
+            this.intTempGauge.Name = "intTempGauge";
+            this.intTempGauge.Size = new System.Drawing.Size(215, 140);
+            this.intTempGauge.TabIndex = 30;
+            // 
+            // extTempGauge
+            // 
+            this.extTempGauge.Location = new System.Drawing.Point(286, 309);
+            this.extTempGauge.Name = "extTempGauge";
+            this.extTempGauge.Size = new System.Drawing.Size(215, 140);
+            this.extTempGauge.TabIndex = 31;
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1250, 585);
-            this.Controls.Add(this.solidGauge1);
-            this.Controls.Add(this.angularGauge1);
-            this.Controls.Add(this.maxAltBox);
-            this.Controls.Add(this.label10);
-            this.Controls.Add(this.intTempBox);
+            this.ClientSize = new System.Drawing.Size(993, 597);
+            this.Controls.Add(this.extTempGauge);
+            this.Controls.Add(this.intTempGauge);
+            this.Controls.Add(this.humidityGauge);
+            this.Controls.Add(this.pressureGauge);
             this.Controls.Add(this.label9);
-            this.Controls.Add(this.extTempBox);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.batteryVoltBox);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.velocityGroup);
             this.Controls.Add(this.positionGroup);
-            this.Controls.Add(this.relHumidityBox);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.pressureBox);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.timestampBox);
             this.Controls.Add(this.label4);
@@ -408,22 +381,20 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox timestampBox;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox pressureBox;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox relHumidityBox;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.GroupBox positionGroup;
         private System.Windows.Forms.GroupBox velocityGroup;
         private System.Windows.Forms.TextBox batteryVoltBox;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox extTempBox;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox intTempBox;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox maxAltBox;
         private System.Windows.Forms.Label label10;
-        private LiveCharts.WinForms.AngularGauge angularGauge1;
-        private LiveCharts.WinForms.SolidGauge solidGauge1;
+        private LiveCharts.WinForms.SolidGauge pressureGauge;
+        private LiveCharts.WinForms.SolidGauge humidityGauge;
+        private LiveCharts.WinForms.SolidGauge intTempGauge;
+        private LiveCharts.WinForms.SolidGauge extTempGauge;
     }
 }
 
