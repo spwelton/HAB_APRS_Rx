@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using LiveCharts; //Core of the library
 using LiveCharts.Wpf; //The WPF controls
 using LiveCharts.WinForms; //the WinForm wrappers
+using System.Drawing.Drawing2D;
 
 namespace BalloonTracker
 {
@@ -40,6 +41,15 @@ namespace BalloonTracker
 
             extTempGauge.From = -60;
             extTempGauge.To = 60;
+
+            batteryGauge.From = 2;
+            batteryGauge.FromColor = System.Windows.Media.Color.FromArgb(0xFF,0xFF,0x00,0x00);
+            batteryGauge.To = 3;
+            batteryGauge.ToColor = System.Windows.Media.Color.FromArgb(0xFF, 0x00, 0xFF, 0x00);
+
+            speedGauge.FromValue = 0;
+            speedGauge.ToValue = 100;
+            speedGauge.Wedge = 270;
 
             TNCListener.RunWorkerAsync();
         }
@@ -226,6 +236,7 @@ namespace BalloonTracker
             longitudeBox.Text = dataPoint.Longitude;
             courseBox.Text = dataPoint.Course.ToString();
             speedBox.Text = dataPoint.Speed.ToString();
+            speedGauge.Value = dataPoint.Speed;
             altitudeBox.Text = dataPoint.Altitude.ToString();
             maxAltBox.Text = dataPoint.MaxAltitude.ToString();
             // Convert the pressure units in Pa to atm and round to 2 decimal places.
@@ -233,7 +244,32 @@ namespace BalloonTracker
             humidityGauge.Value = (Double)dataPoint.RelativeHumidity;
             intTempGauge.Value = dataPoint.TemperatureIn;
             extTempGauge.Value = dataPoint.TemperatureOut;
-            batteryVoltBox.Text = dataPoint.BatteryVoltage.ToString();
+            batteryGauge.Value = dataPoint.BatteryVoltage;
+
+            // Update the compass pointer
+            using (Bitmap b = new Bitmap(Properties.Resources.pointer_arrow))
+            {
+                Bitmap newBmp = RotateImage(b, (dataPoint.Course));
+                compass.BackgroundImage = newBmp;
+            }
+        }
+
+        private Bitmap RotateImage(Bitmap b, float angle)
+        {
+            //Create a new empty bitmap to hold rotated image.
+            Bitmap returnBitmap = new Bitmap(b.Width, b.Height);
+            //Make a graphics object from the empty bitmap.
+            Graphics g = Graphics.FromImage(returnBitmap);
+            //move rotation point to center of image.
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            g.TranslateTransform((float)b.Width / 2, (float)b.Height / 2);
+            //Rotate.        
+            g.RotateTransform(angle);
+            //Move image back.
+            g.TranslateTransform(-(float)b.Width / 2, -(float)b.Height / 2);
+            //Draw passed in image onto graphics object.
+            g.DrawImage(b, new Point(0, 0));
+            return returnBitmap;
         }
     }
 }
