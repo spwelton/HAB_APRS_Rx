@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Media;
 using LiveCharts; //Core of the library
 using LiveCharts.Wpf; //The WPF controls
 using LiveCharts.WinForms; //the WinForm wrappers
@@ -22,9 +23,15 @@ namespace BalloonTracker
         public String balloonSSID;
         public String balloonAddrWSSID;
 
+        public SeriesCollection PressureGraphSeries { get; set; }
+        public string[] Labels { get; set; }
+        public Func<double, string> YFormatter { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
+
+            // Set up the UI elements and gauges
 
             balloonAddress = Properties.Settings.Default.balloonCallSign;
             balloonSSID = Properties.Settings.Default.balloonSSID;
@@ -43,13 +50,35 @@ namespace BalloonTracker
             extTempGauge.To = 60;
 
             batteryGauge.From = 2;
-            batteryGauge.FromColor = System.Windows.Media.Color.FromArgb(0xFF,0xFF,0x00,0x00);
+            batteryGauge.FromColor = System.Windows.Media.Color.FromArgb(0xFF, 0xFF, 0x00, 0x00);
             batteryGauge.To = 3;
             batteryGauge.ToColor = System.Windows.Media.Color.FromArgb(0xFF, 0x00, 0xFF, 0x00);
 
             speedGauge.FromValue = 0;
             speedGauge.ToValue = 100;
             speedGauge.Wedge = 270;
+
+            // Set up the graphs
+
+            PressureGraphSeries = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "Pressure",
+                    Values = new ChartValues<double> { },
+                    PointGeometry = DefaultGeometries.None,
+                    //PointGeometry = DefaultGeometries.Circle,
+                    //PointGeometrySize = 5,
+                    //PointForeground = System.Windows.Media.Brushes.Blue,
+                    StrokeThickness = 2,
+                    Visibility = System.Windows.Visibility.Visible
+                }
+            };
+            pressureChart.Series.Add(PressureGraphSeries[0]);
+            pressureChart.AxisY.Add(new Axis { });
+            pressureChart.AxisX.Add(new Axis { });
+            pressureChart.AxisY[0].MinValue = 0;
+            pressureChart.AxisY[0].MaxValue = 1;
 
             TNCListener.RunWorkerAsync();
         }
@@ -231,19 +260,31 @@ namespace BalloonTracker
         {
             // Update the UI with the telemetry data.
             var dataPoint = e.Result as DataPoint;
+
             timestampBox.Text = dataPoint.Timestamp;
+
             latitudeBox.Text = dataPoint.Latitude;
             longitudeBox.Text = dataPoint.Longitude;
+
             courseBox.Text = dataPoint.Course.ToString();
+
             speedBox.Text = dataPoint.Speed.ToString();
             speedGauge.Value = dataPoint.Speed;
+
             altitudeBox.Text = dataPoint.Altitude.ToString();
             maxAltBox.Text = dataPoint.MaxAltitude.ToString();
+
             // Convert the pressure units in Pa to atm and round to 2 decimal places.
-            pressureGauge.Value = Math.Round((dataPoint.Pressure / 101325.0),2);
+            double pressureATM = Math.Round((dataPoint.Pressure / 101325.0), 2);
+            pressureGauge.Value = pressureATM;
+            PressureGraphSeries[0].Values.Add(pressureATM);
+
             humidityGauge.Value = (Double)dataPoint.RelativeHumidity;
+
             intTempGauge.Value = dataPoint.TemperatureIn;
+
             extTempGauge.Value = dataPoint.TemperatureOut;
+
             batteryGauge.Value = dataPoint.BatteryVoltage;
 
             // Update the compass pointer

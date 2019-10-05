@@ -40,6 +40,10 @@
             this.timestampBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.positionGroup = new System.Windows.Forms.GroupBox();
+            this.ascentRateChart = new LiveCharts.WinForms.CartesianChart();
+            this.altitudeChart = new LiveCharts.WinForms.CartesianChart();
+            this.ascentRateBox = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.maxAltBox = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.pressureGauge = new LiveCharts.WinForms.SolidGauge();
@@ -58,15 +62,11 @@
             this.speedChart = new LiveCharts.WinForms.CartesianChart();
             this.pressureGroup = new System.Windows.Forms.GroupBox();
             this.humidityGroup = new System.Windows.Forms.GroupBox();
-            this.ascentRateBox = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.intTempGroup = new System.Windows.Forms.GroupBox();
             this.extTempGroup = new System.Windows.Forms.GroupBox();
             this.speedGroup = new System.Windows.Forms.GroupBox();
             this.batteryGroup = new System.Windows.Forms.GroupBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.altitudeChart = new LiveCharts.WinForms.CartesianChart();
-            this.ascentRateChart = new LiveCharts.WinForms.CartesianChart();
             this.positionGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.compass)).BeginInit();
             this.pressureGroup.SuspendLayout();
@@ -196,6 +196,41 @@
             this.positionGroup.TabIndex = 17;
             this.positionGroup.TabStop = false;
             this.positionGroup.Text = "Position";
+            // 
+            // ascentRateChart
+            // 
+            this.ascentRateChart.Location = new System.Drawing.Point(23, 422);
+            this.ascentRateChart.Name = "ascentRateChart";
+            this.ascentRateChart.Size = new System.Drawing.Size(336, 200);
+            this.ascentRateChart.TabIndex = 38;
+            this.ascentRateChart.Text = "cartesianChart1";
+            // 
+            // altitudeChart
+            // 
+            this.altitudeChart.Location = new System.Drawing.Point(23, 144);
+            this.altitudeChart.Name = "altitudeChart";
+            this.altitudeChart.Size = new System.Drawing.Size(336, 200);
+            this.altitudeChart.TabIndex = 37;
+            this.altitudeChart.Text = "cartesianChart1";
+            // 
+            // ascentRateBox
+            // 
+            this.ascentRateBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ascentRateBox.Location = new System.Drawing.Point(145, 386);
+            this.ascentRateBox.Name = "ascentRateBox";
+            this.ascentRateBox.ReadOnly = true;
+            this.ascentRateBox.Size = new System.Drawing.Size(214, 30);
+            this.ascentRateBox.TabIndex = 28;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(18, 389);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(118, 25);
+            this.label5.TabIndex = 27;
+            this.label5.Text = "Ascent Rate";
             // 
             // maxAltBox
             // 
@@ -364,25 +399,6 @@
             this.humidityGroup.TabStop = false;
             this.humidityGroup.Text = "Humidity (%)";
             // 
-            // ascentRateBox
-            // 
-            this.ascentRateBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ascentRateBox.Location = new System.Drawing.Point(145, 386);
-            this.ascentRateBox.Name = "ascentRateBox";
-            this.ascentRateBox.ReadOnly = true;
-            this.ascentRateBox.Size = new System.Drawing.Size(214, 30);
-            this.ascentRateBox.TabIndex = 28;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(18, 389);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(118, 25);
-            this.label5.TabIndex = 27;
-            this.label5.Text = "Ascent Rate";
-            // 
             // intTempGroup
             // 
             this.intTempGroup.Controls.Add(this.intTempGauge);
@@ -442,22 +458,6 @@
             this.groupBox1.TabIndex = 46;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Course";
-            // 
-            // altitudeChart
-            // 
-            this.altitudeChart.Location = new System.Drawing.Point(23, 144);
-            this.altitudeChart.Name = "altitudeChart";
-            this.altitudeChart.Size = new System.Drawing.Size(336, 200);
-            this.altitudeChart.TabIndex = 37;
-            this.altitudeChart.Text = "cartesianChart1";
-            // 
-            // ascentRateChart
-            // 
-            this.ascentRateChart.Location = new System.Drawing.Point(23, 422);
-            this.ascentRateChart.Name = "ascentRateChart";
-            this.ascentRateChart.Size = new System.Drawing.Size(336, 200);
-            this.ascentRateChart.TabIndex = 38;
-            this.ascentRateChart.Text = "cartesianChart1";
             // 
             // MainWindow
             // 
