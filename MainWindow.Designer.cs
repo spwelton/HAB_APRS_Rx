@@ -64,18 +64,16 @@
             this.humidityGroup = new System.Windows.Forms.GroupBox();
             this.intTempGroup = new System.Windows.Forms.GroupBox();
             this.extTempGroup = new System.Windows.Forms.GroupBox();
-            this.speedGroup = new System.Windows.Forms.GroupBox();
+            this.velocityGroup = new System.Windows.Forms.GroupBox();
             this.batteryGroup = new System.Windows.Forms.GroupBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.positionGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.compass)).BeginInit();
             this.pressureGroup.SuspendLayout();
             this.humidityGroup.SuspendLayout();
             this.intTempGroup.SuspendLayout();
             this.extTempGroup.SuspendLayout();
-            this.speedGroup.SuspendLayout();
+            this.velocityGroup.SuspendLayout();
             this.batteryGroup.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // TNCListener
@@ -296,7 +294,7 @@
             // 
             this.compass.BackgroundImage = global::BalloonTracker.Properties.Resources.pointer_arrow;
             this.compass.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.compass.Location = new System.Drawing.Point(55, 45);
+            this.compass.Location = new System.Drawing.Point(582, 41);
             this.compass.Name = "compass";
             this.compass.Size = new System.Drawing.Size(128, 128);
             this.compass.TabIndex = 33;
@@ -338,7 +336,7 @@
             // 
             this.courseBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.courseBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.courseBox.Location = new System.Drawing.Point(55, 191);
+            this.courseBox.Location = new System.Drawing.Point(582, 187);
             this.courseBox.Name = "courseBox";
             this.courseBox.ReadOnly = true;
             this.courseBox.Size = new System.Drawing.Size(128, 23);
@@ -423,18 +421,20 @@
             this.extTempGroup.TabStop = false;
             this.extTempGroup.Text = "External Temperature (C)";
             // 
-            // speedGroup
+            // velocityGroup
             // 
-            this.speedGroup.Controls.Add(this.speedGauge);
-            this.speedGroup.Controls.Add(this.speedChart);
-            this.speedGroup.Controls.Add(this.speedBox);
-            this.speedGroup.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.speedGroup.Location = new System.Drawing.Point(44, 482);
-            this.speedGroup.Name = "speedGroup";
-            this.speedGroup.Size = new System.Drawing.Size(555, 233);
-            this.speedGroup.TabIndex = 44;
-            this.speedGroup.TabStop = false;
-            this.speedGroup.Text = "Speed (MPH)";
+            this.velocityGroup.Controls.Add(this.compass);
+            this.velocityGroup.Controls.Add(this.courseBox);
+            this.velocityGroup.Controls.Add(this.speedGauge);
+            this.velocityGroup.Controls.Add(this.speedChart);
+            this.velocityGroup.Controls.Add(this.speedBox);
+            this.velocityGroup.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.velocityGroup.Location = new System.Drawing.Point(44, 482);
+            this.velocityGroup.Name = "velocityGroup";
+            this.velocityGroup.Size = new System.Drawing.Size(739, 233);
+            this.velocityGroup.TabIndex = 44;
+            this.velocityGroup.TabStop = false;
+            this.velocityGroup.Text = "Speed (MPH)";
             // 
             // batteryGroup
             // 
@@ -447,26 +447,13 @@
             this.batteryGroup.TabStop = false;
             this.batteryGroup.Text = "Battery Voltage";
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.compass);
-            this.groupBox1.Controls.Add(this.courseBox);
-            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(647, 482);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(247, 233);
-            this.groupBox1.TabIndex = 46;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Course";
-            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1902, 1013);
-            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.batteryGroup);
-            this.Controls.Add(this.speedGroup);
+            this.Controls.Add(this.velocityGroup);
             this.Controls.Add(this.extTempGroup);
             this.Controls.Add(this.intTempGroup);
             this.Controls.Add(this.humidityGroup);
@@ -486,11 +473,9 @@
             this.humidityGroup.ResumeLayout(false);
             this.intTempGroup.ResumeLayout(false);
             this.extTempGroup.ResumeLayout(false);
-            this.speedGroup.ResumeLayout(false);
-            this.speedGroup.PerformLayout();
+            this.velocityGroup.ResumeLayout(false);
+            this.velocityGroup.PerformLayout();
             this.batteryGroup.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -532,9 +517,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.GroupBox intTempGroup;
         private System.Windows.Forms.GroupBox extTempGroup;
-        private System.Windows.Forms.GroupBox speedGroup;
+        private System.Windows.Forms.GroupBox velocityGroup;
         private System.Windows.Forms.GroupBox batteryGroup;
-        private System.Windows.Forms.GroupBox groupBox1;
         private LiveCharts.WinForms.CartesianChart ascentRateChart;
         private LiveCharts.WinForms.CartesianChart altitudeChart;
     }
