@@ -24,6 +24,13 @@ namespace BalloonTracker
         public String balloonAddrWSSID;
 
         public SeriesCollection PressureGraphSeries { get; set; }
+        public SeriesCollection HumidityGraphSeries { get; set; }
+        public SeriesCollection IntTempGraphSeries { get; set; }
+        public SeriesCollection ExtTempGraphSeries { get; set; }
+        public SeriesCollection SpeedGraphSeries { get; set; }
+        public SeriesCollection AltitudeGraphSeries { get; set; }
+        public SeriesCollection AscentRateGraphSeries { get; set; }
+
         public string[] Labels { get; set; }
         public Func<double, string> YFormatter { get; set; }
 
@@ -60,6 +67,7 @@ namespace BalloonTracker
 
             // Set up the graphs
 
+            // Pressure Graph
             PressureGraphSeries = new SeriesCollection
             {
                 new LineSeries
@@ -79,6 +87,139 @@ namespace BalloonTracker
             pressureChart.AxisX.Add(new Axis { });
             pressureChart.AxisY[0].MinValue = 0;
             pressureChart.AxisY[0].MaxValue = 1;
+            pressureChart.AxisY[0].Separator.Step = 0.2;
+
+            // Humidity Graph
+            HumidityGraphSeries = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "Humidity",
+                    Values = new ChartValues<double> { },
+                    PointGeometry = DefaultGeometries.None,
+                    //PointGeometry = DefaultGeometries.Circle,
+                    //PointGeometrySize = 5,
+                    //PointForeground = System.Windows.Media.Brushes.Blue,
+                    StrokeThickness = 2,
+                    Visibility = System.Windows.Visibility.Visible
+                }
+            };
+            humidityChart.Series.Add(HumidityGraphSeries[0]);
+            humidityChart.AxisY.Add(new Axis { });
+            humidityChart.AxisX.Add(new Axis { });
+            humidityChart.AxisY[0].MinValue = 0;
+            humidityChart.AxisY[0].MaxValue = 100;
+            humidityChart.AxisY[0].Separator.Step = 20;
+
+            // External Temperature Graph
+            ExtTempGraphSeries = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "External Temperature",
+                    Values = new ChartValues<double> { },
+                    PointGeometry = DefaultGeometries.None,
+                    //PointGeometry = DefaultGeometries.Circle,
+                    //PointGeometrySize = 5,
+                    //PointForeground = System.Windows.Media.Brushes.Blue,
+                    StrokeThickness = 2,
+                    Visibility = System.Windows.Visibility.Visible
+                }
+            };
+            extTempChart.Series.Add(ExtTempGraphSeries[0]);
+            extTempChart.AxisY.Add(new Axis { });
+            extTempChart.AxisX.Add(new Axis { });
+            extTempChart.AxisY[0].MinValue = -60;
+            extTempChart.AxisY[0].MaxValue = 60;
+            extTempChart.AxisY[0].Separator.Step = 20;
+
+            // Internal Temperature Graph
+            IntTempGraphSeries = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "Internal Temperature",
+                    Values = new ChartValues<double> { },
+                    PointGeometry = DefaultGeometries.None,
+                    //PointGeometry = DefaultGeometries.Circle,
+                    //PointGeometrySize = 5,
+                    //PointForeground = System.Windows.Media.Brushes.Blue,
+                    StrokeThickness = 2,
+                    Visibility = System.Windows.Visibility.Visible
+                }
+            };
+            intTempChart.Series.Add(IntTempGraphSeries[0]);
+            intTempChart.AxisY.Add(new Axis { });
+            intTempChart.AxisX.Add(new Axis { });
+            intTempChart.AxisY[0].MinValue = -60;
+            intTempChart.AxisY[0].MaxValue = 60;
+            intTempChart.AxisY[0].Separator.Step = 20;
+
+            // Speed Graph
+            SpeedGraphSeries = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "Speed",
+                    Values = new ChartValues<int> { },
+                    PointGeometry = DefaultGeometries.None,
+                    //PointGeometry = DefaultGeometries.Circle,
+                    //PointGeometrySize = 5,
+                    //PointForeground = System.Windows.Media.Brushes.Blue,
+                    StrokeThickness = 2,
+                    Visibility = System.Windows.Visibility.Visible
+                }
+            };
+            speedChart.Series.Add(SpeedGraphSeries[0]);
+            speedChart.AxisY.Add(new Axis { });
+            speedChart.AxisX.Add(new Axis { });
+            speedChart.AxisY[0].MinValue = 0;
+            speedChart.AxisY[0].MaxValue = 100;
+            speedChart.AxisY[0].Separator.Step = 20;
+
+            // Altitude Graph
+            AltitudeGraphSeries = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "Altitude",
+                    Values = new ChartValues<int> { },
+                    PointGeometry = DefaultGeometries.None,
+                    //PointGeometry = DefaultGeometries.Circle,
+                    //PointGeometrySize = 5,
+                    //PointForeground = System.Windows.Media.Brushes.Blue,
+                    StrokeThickness = 2,
+                    Visibility = System.Windows.Visibility.Visible
+                }
+            };
+            altitudeChart.Series.Add(AltitudeGraphSeries[0]);
+            altitudeChart.AxisY.Add(new Axis { });
+            altitudeChart.AxisX.Add(new Axis { });
+            altitudeChart.AxisY[0].MinValue = 0;
+            altitudeChart.AxisY[0].MaxValue = 100000;
+            altitudeChart.AxisY[0].Separator.Step = 20000;
+
+            // Ascent Rate Graph
+            AscentRateGraphSeries = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "Ascent Rate",
+                    Values = new ChartValues<double> { },
+                    PointGeometry = DefaultGeometries.None,
+                    //PointGeometry = DefaultGeometries.Circle,
+                    //PointGeometrySize = 5,
+                    //PointForeground = System.Windows.Media.Brushes.Blue,
+                    StrokeThickness = 2,
+                    Visibility = System.Windows.Visibility.Visible
+                }
+            };
+            ascentRateChart.Series.Add(AscentRateGraphSeries[0]);
+            ascentRateChart.AxisY.Add(new Axis { });
+            ascentRateChart.AxisX.Add(new Axis { });
+            ascentRateChart.AxisY[0].MinValue = -100;
+            ascentRateChart.AxisY[0].MaxValue = 100;
+            ascentRateChart.AxisY[0].Separator.Step = 40;
 
             TNCListener.RunWorkerAsync();
         }
@@ -270,8 +411,10 @@ namespace BalloonTracker
 
             speedBox.Text = dataPoint.Speed.ToString();
             speedGauge.Value = dataPoint.Speed;
+            SpeedGraphSeries[0].Values.Add(dataPoint.Speed);
 
             altitudeBox.Text = dataPoint.Altitude.ToString();
+            AltitudeGraphSeries[0].Values.Add(dataPoint.Altitude);
             maxAltBox.Text = dataPoint.MaxAltitude.ToString();
 
             // Convert the pressure units in Pa to atm and round to 2 decimal places.
@@ -280,10 +423,13 @@ namespace BalloonTracker
             PressureGraphSeries[0].Values.Add(pressureATM);
 
             humidityGauge.Value = (Double)dataPoint.RelativeHumidity;
+            HumidityGraphSeries[0].Values.Add((Double)dataPoint.RelativeHumidity);
 
             intTempGauge.Value = dataPoint.TemperatureIn;
+            IntTempGraphSeries[0].Values.Add(dataPoint.TemperatureIn);
 
             extTempGauge.Value = dataPoint.TemperatureOut;
+            ExtTempGraphSeries[0].Values.Add(dataPoint.TemperatureOut);
 
             batteryGauge.Value = dataPoint.BatteryVoltage;
 

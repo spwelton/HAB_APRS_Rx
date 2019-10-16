@@ -440,7 +440,7 @@
             // 
             this.batteryGroup.Controls.Add(this.batteryGauge);
             this.batteryGroup.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.batteryGroup.Location = new System.Drawing.Point(947, 482);
+            this.batteryGroup.Location = new System.Drawing.Point(953, 482);
             this.batteryGroup.Name = "batteryGroup";
             this.batteryGroup.Size = new System.Drawing.Size(255, 233);
             this.batteryGroup.TabIndex = 45;
