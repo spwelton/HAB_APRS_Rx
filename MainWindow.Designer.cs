@@ -69,6 +69,7 @@
             this.lastPacketTimestampLbl = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.positionGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.compass)).BeginInit();
             this.pressureGroup.SuspendLayout();
@@ -470,11 +471,19 @@
             this.toolStripStatusLabel2.Size = new System.Drawing.Size(1496, 37);
             this.toolStripStatusLabel2.Spring = true;
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(421, 47);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(100, 23);
+            this.progressBar1.TabIndex = 47;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1902, 1013);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.batteryGroup);
             this.Controls.Add(this.velocityGroup);
@@ -546,6 +555,7 @@
         private System.Windows.Forms.ToolStripStatusLabel lastPacketTimestampLbl;
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
 
