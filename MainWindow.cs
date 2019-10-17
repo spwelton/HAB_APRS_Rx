@@ -402,7 +402,7 @@ namespace BalloonTracker
             // Update the UI with the telemetry data.
             var dataPoint = e.Result as DataPoint;
 
-            timestampBox.Text = dataPoint.Timestamp;
+            lastPacketTimestampLbl.Text = dataPoint.Timestamp;
 
             latitudeBox.Text = dataPoint.Latitude;
             longitudeBox.Text = dataPoint.Longitude;
@@ -457,6 +457,12 @@ namespace BalloonTracker
             //Draw passed in image onto graphics object.
             g.DrawImage(b, new Point(0, 0));
             return returnBitmap;
+        }
+
+        private void ToolStripDropDownButton1_Click(object sender, EventArgs e)
+        {
+            PreferencesForm prefsForm = new PreferencesForm();
+            prefsForm.ShowDialog();
         }
     }
 }

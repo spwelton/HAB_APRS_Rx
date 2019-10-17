@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.TNCListener = new System.ComponentModel.BackgroundWorker();
-            this.preferencesBtn = new System.Windows.Forms.Button();
             this.latitudeLbl = new System.Windows.Forms.Label();
             this.longitudeLbl = new System.Windows.Forms.Label();
             this.latitudeBox = new System.Windows.Forms.TextBox();
@@ -37,8 +37,6 @@
             this.packetParser = new System.ComponentModel.BackgroundWorker();
             this.altitudeBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.timestampBox = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.positionGroup = new System.Windows.Forms.GroupBox();
             this.ascentRateChart = new LiveCharts.WinForms.CartesianChart();
             this.altitudeChart = new LiveCharts.WinForms.CartesianChart();
@@ -66,6 +64,11 @@
             this.extTempGroup = new System.Windows.Forms.GroupBox();
             this.velocityGroup = new System.Windows.Forms.GroupBox();
             this.batteryGroup = new System.Windows.Forms.GroupBox();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lastPacketTimestampLbl = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.positionGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.compass)).BeginInit();
             this.pressureGroup.SuspendLayout();
@@ -74,23 +77,13 @@
             this.extTempGroup.SuspendLayout();
             this.velocityGroup.SuspendLayout();
             this.batteryGroup.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // TNCListener
             // 
             this.TNCListener.DoWork += new System.ComponentModel.DoWorkEventHandler(this.TNCListener_DoWork);
             this.TNCListener.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.TNCListener_RunWorkerCompleted);
-            // 
-            // preferencesBtn
-            // 
-            this.preferencesBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.preferencesBtn.Location = new System.Drawing.Point(1423, 20);
-            this.preferencesBtn.Name = "preferencesBtn";
-            this.preferencesBtn.Size = new System.Drawing.Size(206, 48);
-            this.preferencesBtn.TabIndex = 0;
-            this.preferencesBtn.Text = "Preferences";
-            this.preferencesBtn.UseVisualStyleBackColor = true;
-            this.preferencesBtn.Click += new System.EventHandler(this.PreferencesBtn_Click);
             // 
             // latitudeLbl
             // 
@@ -153,25 +146,6 @@
             this.label3.Size = new System.Drawing.Size(77, 25);
             this.label3.TabIndex = 9;
             this.label3.Text = "Altitude";
-            // 
-            // timestampBox
-            // 
-            this.timestampBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.timestampBox.Location = new System.Drawing.Point(287, 29);
-            this.timestampBox.Name = "timestampBox";
-            this.timestampBox.ReadOnly = true;
-            this.timestampBox.Size = new System.Drawing.Size(214, 30);
-            this.timestampBox.TabIndex = 12;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(39, 32);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(200, 25);
-            this.label4.TabIndex = 11;
-            this.label4.Text = "Last Packet Received";
             // 
             // positionGroup
             // 
@@ -447,11 +421,61 @@
             this.batteryGroup.TabStop = false;
             this.batteryGroup.Text = "Battery Voltage";
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1,
+            this.lastPacketTimestampLbl,
+            this.toolStripStatusLabel2,
+            this.toolStripDropDownButton1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 971);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1902, 42);
+            this.statusStrip1.TabIndex = 46;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripStatusLabel1.Margin = new System.Windows.Forms.Padding(10, 5, 10, 5);
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(193, 32);
+            this.toolStripStatusLabel1.Text = "Last Packet Received:";
+            // 
+            // lastPacketTimestampLbl
+            // 
+            this.lastPacketTimestampLbl.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lastPacketTimestampLbl.Margin = new System.Windows.Forms.Padding(10, 5, 10, 5);
+            this.lastPacketTimestampLbl.Name = "lastPacketTimestampLbl";
+            this.lastPacketTimestampLbl.Size = new System.Drawing.Size(23, 32);
+            this.lastPacketTimestampLbl.Text = "0";
+            // 
+            // toolStripDropDownButton1
+            // 
+            this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripDropDownButton1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
+            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton1.Margin = new System.Windows.Forms.Padding(10, 5, 10, 5);
+            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+            this.toolStripDropDownButton1.ShowDropDownArrow = false;
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(115, 32);
+            this.toolStripDropDownButton1.Text = "Preferences";
+            this.toolStripDropDownButton1.Click += new System.EventHandler(this.ToolStripDropDownButton1_Click);
+            // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(1496, 37);
+            this.toolStripStatusLabel2.Spring = true;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1902, 1013);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.batteryGroup);
             this.Controls.Add(this.velocityGroup);
             this.Controls.Add(this.extTempGroup);
@@ -459,12 +483,9 @@
             this.Controls.Add(this.humidityGroup);
             this.Controls.Add(this.pressureGroup);
             this.Controls.Add(this.positionGroup);
-            this.Controls.Add(this.timestampBox);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.preferencesBtn);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "MainWindow";
-            this.Text = "Form1";
+            this.Text = "HAB Telemetry";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.positionGroup.ResumeLayout(false);
             this.positionGroup.PerformLayout();
@@ -476,6 +497,8 @@
             this.velocityGroup.ResumeLayout(false);
             this.velocityGroup.PerformLayout();
             this.batteryGroup.ResumeLayout(false);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -484,7 +507,6 @@
         #endregion
 
         private System.ComponentModel.BackgroundWorker TNCListener;
-        private System.Windows.Forms.Button preferencesBtn;
         private System.Windows.Forms.Label latitudeLbl;
         private System.Windows.Forms.Label longitudeLbl;
         private System.Windows.Forms.TextBox latitudeBox;
@@ -492,8 +514,6 @@
         private System.ComponentModel.BackgroundWorker packetParser;
         private System.Windows.Forms.TextBox altitudeBox;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox timestampBox;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.GroupBox positionGroup;
         private System.Windows.Forms.TextBox maxAltBox;
         private System.Windows.Forms.Label label10;
@@ -521,6 +541,11 @@
         private System.Windows.Forms.GroupBox batteryGroup;
         private LiveCharts.WinForms.CartesianChart ascentRateChart;
         private LiveCharts.WinForms.CartesianChart altitudeChart;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripStatusLabel lastPacketTimestampLbl;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
     }
 }
 
