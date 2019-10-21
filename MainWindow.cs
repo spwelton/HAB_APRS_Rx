@@ -22,6 +22,12 @@ namespace BalloonTracker
         public String balloonAddress;
         public String balloonSSID;
         public String balloonAddrWSSID;
+        public DateTime lastPacketTimestamp;
+        public DateTime thisPacketTimestamp;
+        public int numPacketsReceived = 0;
+        public double packetSuccessRate;
+        public TimeSpan elapsedTimeBetweenPackets;
+        public int lastAltitudeReading;
 
         public SeriesCollection PressureGraphSeries { get; set; }
         public SeriesCollection HumidityGraphSeries { get; set; }
@@ -30,6 +36,7 @@ namespace BalloonTracker
         public SeriesCollection SpeedGraphSeries { get; set; }
         public SeriesCollection AltitudeGraphSeries { get; set; }
         public SeriesCollection AscentRateGraphSeries { get; set; }
+        public SeriesCollection BatteryVoltageGraphSeries { get; set; }
 
         public string[] Labels { get; set; }
         public Func<double, string> YFormatter { get; set; }
@@ -177,6 +184,28 @@ namespace BalloonTracker
             speedChart.AxisY[0].MaxValue = 100;
             speedChart.AxisY[0].Separator.Step = 20;
 
+            // Battery Graph
+            BatteryVoltageGraphSeries = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "Battery Voltage",
+                    Values = new ChartValues<double> { },
+                    PointGeometry = DefaultGeometries.None,
+                    //PointGeometry = DefaultGeometries.Circle,
+                    //PointGeometrySize = 5,
+                    //PointForeground = System.Windows.Media.Brushes.Blue,
+                    StrokeThickness = 2,
+                    Visibility = System.Windows.Visibility.Visible
+                }
+            };
+            batteryVoltageChart.Series.Add(BatteryVoltageGraphSeries[0]);
+            batteryVoltageChart.AxisY.Add(new Axis { });
+            batteryVoltageChart.AxisX.Add(new Axis { });
+            batteryVoltageChart.AxisY[0].MinValue = 0;
+            batteryVoltageChart.AxisY[0].MaxValue = 3;
+            batteryVoltageChart.AxisY[0].Separator.Step = 0.5;
+
             // Altitude Graph
             AltitudeGraphSeries = new SeriesCollection
             {
@@ -312,6 +341,8 @@ namespace BalloonTracker
         private void PacketParser_DoWork(object sender, DoWorkEventArgs e)
         {
             var dataPoint = new DataPoint();
+            numPacketsReceived++;
+            dataPoint.PacketsReceived = numPacketsReceived;
 
             String aprsPacket = e.Argument.ToString();
             try
@@ -321,6 +352,13 @@ namespace BalloonTracker
                 timestampStr = timestampStr.Insert(4, ":");
                 timestampStr = timestampStr.Insert(2, ":");
                 dataPoint.Timestamp = timestampStr;
+                // How long has it been since the last packet? Use the computer's clock for more precision.
+                thisPacketTimestamp = DateTime.Now;
+                if (numPacketsReceived > 1)
+                {
+                    elapsedTimeBetweenPackets = thisPacketTimestamp - lastPacketTimestamp;
+                }
+                lastPacketTimestamp = thisPacketTimestamp;
 
                 // Parse Lat/Lon
                 var latDegrees = aprsPacket.Substring(7, 2);
@@ -350,6 +388,17 @@ namespace BalloonTracker
                     {
                         case "A":
                             dataPoint.Altitude = Convert.ToInt32(dataTuple[1]);
+                            if (numPacketsReceived > 1)
+                            {
+                                int altitudeGain = dataPoint.Altitude - lastAltitudeReading;
+                                double ascentRate = altitudeGain / elapsedTimeBetweenPackets.TotalSeconds;
+                                dataPoint.AscentRate = ascentRate;
+                            }
+                            else
+                            {
+                                dataPoint.AscentRate = 0;
+                            }                            
+                            lastAltitudeReading = dataPoint.Altitude;
                             break;
 
                         case "Amax":
@@ -417,6 +466,9 @@ namespace BalloonTracker
             AltitudeGraphSeries[0].Values.Add(dataPoint.Altitude);
             maxAltBox.Text = dataPoint.MaxAltitude.ToString();
 
+            ascentRateBox.Text = dataPoint.AscentRate.ToString();
+            AscentRateGraphSeries[0].Values.Add(dataPoint.AscentRate);
+
             // Convert the pressure units in Pa to atm and round to 2 decimal places.
             double pressureATM = Math.Round((dataPoint.Pressure / 101325.0), 2);
             pressureGauge.Value = pressureATM;
@@ -432,6 +484,7 @@ namespace BalloonTracker
             ExtTempGraphSeries[0].Values.Add(dataPoint.TemperatureOut);
 
             batteryGauge.Value = dataPoint.BatteryVoltage;
+            BatteryVoltageGraphSeries[0].Values.Add(dataPoint.BatteryVoltage);
 
             // Update the compass pointer
             using (Bitmap b = new Bitmap(Properties.Resources.pointer_arrow))
@@ -439,6 +492,10 @@ namespace BalloonTracker
                 Bitmap newBmp = RotateImage(b, (dataPoint.Course));
                 compass.BackgroundImage = newBmp;
             }
+
+            packetsRxLbl.Text = dataPoint.PacketsReceived.ToString();
+            packetsExpectedLbl.Text = dataPoint.PacketIndex.ToString();
+            packetSuccessLbl.Text = (((double)dataPoint.PacketsReceived / (double)dataPoint.PacketIndex) * 100.0).ToString();
         }
 
         private Bitmap RotateImage(Bitmap b, float angle)
