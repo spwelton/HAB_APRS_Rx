@@ -47,6 +47,9 @@
             this.altLbl = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.pressureGauge = new LiveCharts.WinForms.SolidGauge();
             this.humidityGauge = new LiveCharts.WinForms.SolidGauge();
             this.intTempGauge = new LiveCharts.WinForms.SolidGauge();
@@ -87,9 +90,6 @@
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.preferencesButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.mainLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.positionGroup.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.compass)).BeginInit();
@@ -320,6 +320,39 @@
             this.label2.TabIndex = 41;
             this.label2.Text = "Ascent Rate";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label3.Location = new System.Drawing.Point(379, 84);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(69, 42);
+            this.label3.TabIndex = 42;
+            this.label3.Text = "feet";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label4.Location = new System.Drawing.Point(379, 126);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(69, 42);
+            this.label4.TabIndex = 43;
+            this.label4.Text = "feet";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label5.Location = new System.Drawing.Point(379, 168);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(69, 46);
+            this.label5.TabIndex = 44;
+            this.label5.Text = "fps";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pressureGauge
             // 
@@ -785,39 +818,6 @@
             this.mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 42F));
             this.mainLayoutPanel.Size = new System.Drawing.Size(1902, 1055);
             this.mainLayoutPanel.TabIndex = 47;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label3.Location = new System.Drawing.Point(379, 84);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(69, 42);
-            this.label3.TabIndex = 42;
-            this.label3.Text = "feet";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label4.Location = new System.Drawing.Point(379, 126);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(69, 42);
-            this.label4.TabIndex = 43;
-            this.label4.Text = "feet";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label5.Location = new System.Drawing.Point(379, 168);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(69, 46);
-            this.label5.TabIndex = 44;
-            this.label5.Text = "fps";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // MainWindow
             // 
