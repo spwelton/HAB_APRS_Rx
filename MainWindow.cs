@@ -38,9 +38,6 @@ namespace BalloonTracker
         public SeriesCollection AscentRateGraphSeries { get; set; }
         public SeriesCollection BatteryVoltageGraphSeries { get; set; }
 
-        public string[] Labels { get; set; }
-        public Func<double, string> YFormatter { get; set; }
-
         public MainWindow()
         {
             InitializeComponent();
@@ -315,10 +312,14 @@ namespace BalloonTracker
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                // Something broke, show a message.
-                MessageBox.Show(ex.ToString());
+                // Connection broke, show a message.
+                DialogResult SocketExDialogResult = MessageBox.Show("Could not connect to modem. \nClick Retry to try again or Cancel to close the app.","Connection Error",MessageBoxButtons.RetryCancel,MessageBoxIcon.Error);
+                if (SocketExDialogResult == DialogResult.Cancel)
+                {
+                    e.Result = -1;
+                }
             }
             
         }
@@ -332,14 +333,24 @@ namespace BalloonTracker
         private void TNCListener_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             // Process the packet and update the UI.
-            packetParser.RunWorkerAsync(e.Result);
-            //this.latitudeBox.Text = e.Result.ToString();
+            if (e.Result != null)
+            {
+                if (e.Result.Equals(-1)) {
+                    // If we got a '-1' back from the TNC Listener then there was 
+                    // a "Cancel" command from the user and we should close the app.
+                    this.Close();
+                }
+                // We got a packet, let's parse it.
+                packetParser.RunWorkerAsync(e.Result);
+            }
             // Start listening again.
             TNCListener.RunWorkerAsync();
         }
 
         private void PacketParser_DoWork(object sender, DoWorkEventArgs e)
         {
+            if (e.Argument == null) { return; }
+
             var dataPoint = new DataPoint();
             numPacketsReceived++;
             dataPoint.PacketsReceived = numPacketsReceived;
@@ -438,16 +449,17 @@ namespace BalloonTracker
                 e.Result = dataPoint;
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                string errorMsg = String.Format("Unable to parse packet '{0}'", ex.ToString());
-                MessageBox.Show(errorMsg, "FAIL");
-                
+                numPacketsReceived--;
+                MessageBox.Show("Unable to parse packet.", "Mangled Packet",MessageBoxButtons.OK,MessageBoxIcon.Error);
             }
         }
 
         private void PacketParser_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            if (e.Result == null) { return; }
+
             // Update the UI with the telemetry data.
             var dataPoint = e.Result as DataPoint;
 
@@ -495,7 +507,7 @@ namespace BalloonTracker
 
             packetsRxLbl.Text = dataPoint.PacketsReceived.ToString();
             packetsExpectedLbl.Text = dataPoint.PacketIndex.ToString();
-            packetSuccessLbl.Text = (((double)dataPoint.PacketsReceived / (double)dataPoint.PacketIndex) * 100.0).ToString();
+            packetSuccessLbl.Text = (((double)dataPoint.PacketsReceived / (double)dataPoint.PacketIndex) * 100.0).ToString("F1");
         }
 
         private Bitmap RotateImage(Bitmap b, float angle)
