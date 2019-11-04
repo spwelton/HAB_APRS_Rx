@@ -251,76 +251,65 @@ namespace BalloonTracker
         }
 
         private void TNCListener_DoWork(object sender, DoWorkEventArgs e)
-        {
-            try
+        {            
+            // Set up the TCP connection to the TNC
+            string server = "127.0.0.1";
+            Int32 port = 8001;
+            TcpClient client = new TcpClient(server, port);
+            NetworkStream stream = client.GetStream();
+
+            var loop = true;
+
+            while (loop)
             {
-                // Set up the TCP connection to the TNC
-                string server = "127.0.0.1";
-                Int32 port = 8001;
-                TcpClient client = new TcpClient(server, port);
-                NetworkStream stream = client.GetStream();
+                // Buffer to store the incoming KISS frame.
+                Byte[] KISSFrame = new Byte[256];
 
-                var loop = true;
+                // Read the input from TCP localhost and return byte count.
+                Int32 bytes = stream.Read(KISSFrame, 0, KISSFrame.Length);                    
+                    
+                Byte[] srcAddressRaw = new Byte[7];  // APRS src addr raw from KISS
+                Byte[] srcAddressBytes = new Byte[6];     // APRS src addr w/o SSID
+                Byte SSID = new Byte();                 // APRS src addr SSID
+                Byte SSIDMask = 0x1E;                   // Bitmask for AX.25 SSID field
+                int srcAddressOffset = 9;                  // KISS byte number for src addr
 
-                while (loop)
+                // Collect the source address bytes and convert to ASCII
+                for (int pos = 0; pos < 7; pos++)
                 {
-                    // Buffer to store the incoming KISS frame.
-                    Byte[] KISSFrame = new Byte[256];
-
-                    // Read the input from TCP localhost and return byte count.
-                    Int32 bytes = stream.Read(KISSFrame, 0, KISSFrame.Length);                    
-                    
-                    Byte[] srcAddressRaw = new Byte[7];  // APRS src addr raw from KISS
-                    Byte[] srcAddressBytes = new Byte[6];     // APRS src addr w/o SSID
-                    Byte SSID = new Byte();                 // APRS src addr SSID
-                    Byte SSIDMask = 0x1E;                   // Bitmask for AX.25 SSID field
-                    int srcAddressOffset = 9;                  // KISS byte number for src addr
-
-                    // Collect the source address bytes and convert to ASCII
-                    for (int pos = 0; pos < 7; pos++)
+                    // Get the raw src addr bytes from the KISS frame
+                    srcAddressRaw[pos] = KISSFrame[pos + srcAddressOffset];
+                    if (pos < 6)
                     {
-                        // Get the raw src addr bytes from the KISS frame
-                        srcAddressRaw[pos] = KISSFrame[pos + srcAddressOffset];
-                        if (pos < 6)
-                        {
-                            // Bit-shift the first 6 bytes right 1 position for address
-                            srcAddressBytes[pos] = (Byte)(srcAddressRaw[pos] >> 1);
-                        }
-                        else if (pos == 6)
-                        {
-                            // Use the SSID mask to recover the SSID from the AX.25 frame
-                            // The field has 3 bits reserved, then 4-bits for SSID, then 1 reserved
-                            // xxxSSIDx
-                            SSID = (byte)((srcAddressRaw[pos] & SSIDMask) >> 1);
-                        }
+                        // Bit-shift the first 6 bytes right 1 position for address
+                        srcAddressBytes[pos] = (Byte)(srcAddressRaw[pos] >> 1);
                     }
-                    // Convert to human-readable formats :)
-                    String srcAddress = Encoding.ASCII.GetString(srcAddressBytes);
-                    String srcSSID    = SSID.ToString();
-                    String srcAddrWSSID  = srcAddress + "-" + srcSSID;
-                    String wholeFrame = Encoding.UTF8.GetString(KISSFrame, 0, bytes - 1);
-                    
-                    int index = wholeFrame.IndexOf('/');
-                    string aprsPayload = wholeFrame.Substring(index + 1);
-
-                    if (srcAddrWSSID == balloonAddrWSSID)
+                    else if (pos == 6)
                     {
-                        // OK, we got a packet to display, stop looping.
-                        loop = false;
-                        // Set the results and let's exit.
-                        e.Result = aprsPayload;
+                        // Use the SSID mask to recover the SSID from the AX.25 frame
+                        // The field has 3 bits reserved, then 4-bits for SSID, then 1 reserved
+                        // xxxSSIDx
+                        SSID = (byte)((srcAddressRaw[pos] & SSIDMask) >> 1);
                     }
                 }
-            }
-            catch (Exception)
-            {
-                // Connection broke, show a message.
-                DialogResult SocketExDialogResult = MessageBox.Show("Could not connect to modem. \nClick Retry to try again or Cancel to close the app.","Connection Error",MessageBoxButtons.RetryCancel,MessageBoxIcon.Error);
-                if (SocketExDialogResult == DialogResult.Cancel)
+                // Convert to human-readable formats :)
+                String srcAddress = Encoding.ASCII.GetString(srcAddressBytes);
+                String srcSSID    = SSID.ToString();
+                String srcAddrWSSID  = srcAddress + "-" + srcSSID;
+                String wholeFrame = Encoding.UTF8.GetString(KISSFrame, 0, bytes - 1);
+                    
+                int index = wholeFrame.IndexOf('/');
+                string aprsPayload = wholeFrame.Substring(index + 1);
+
+                if (srcAddrWSSID == balloonAddrWSSID)
                 {
-                    e.Result = -1;
+                    // OK, we got a packet to display, stop looping.
+                    loop = false;
+                    // Set the results and let's exit.
+                    e.Result = aprsPayload;
                 }
             }
+            
             
         }
 
@@ -333,133 +322,114 @@ namespace BalloonTracker
         private void TNCListener_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             // Process the packet and update the UI.
-            if (e.Result != null)
-            {
-                if (e.Result.Equals(-1)) {
-                    // If we got a '-1' back from the TNC Listener then there was 
-                    // a "Cancel" command from the user and we should close the app.
-                    this.Close();
-                }
-                // We got a packet, let's parse it.
-                packetParser.RunWorkerAsync(e.Result);
-            }
+            
+            // We got a packet, let's parse it.
+            packetParser.RunWorkerAsync(e.Result);
+            
             // Start listening again.
             TNCListener.RunWorkerAsync();
         }
 
         private void PacketParser_DoWork(object sender, DoWorkEventArgs e)
         {
-            if (e.Argument == null) { return; }
-
             var dataPoint = new DataPoint();
             numPacketsReceived++;
             dataPoint.PacketsReceived = numPacketsReceived;
 
             String aprsPacket = e.Argument.ToString();
-            try
+            
+            // Parse Timestamp
+            string timestampStr = aprsPacket.Substring(0, 6);
+            timestampStr = timestampStr.Insert(4, ":");
+            timestampStr = timestampStr.Insert(2, ":");
+            dataPoint.Timestamp = timestampStr;
+            // How long has it been since the last packet? Use the computer's clock for more precision.
+            thisPacketTimestamp = DateTime.Now;
+            if (numPacketsReceived > 1)
             {
-                // Parse Timestamp
-                string timestampStr = aprsPacket.Substring(0, 6);
-                timestampStr = timestampStr.Insert(4, ":");
-                timestampStr = timestampStr.Insert(2, ":");
-                dataPoint.Timestamp = timestampStr;
-                // How long has it been since the last packet? Use the computer's clock for more precision.
-                thisPacketTimestamp = DateTime.Now;
-                if (numPacketsReceived > 1)
-                {
-                    elapsedTimeBetweenPackets = thisPacketTimestamp - lastPacketTimestamp;
-                }
-                lastPacketTimestamp = thisPacketTimestamp;
-
-                // Parse Lat/Lon
-                var latDegrees = aprsPacket.Substring(7, 2);
-                var latMinutes = aprsPacket.Substring(9, 5);
-                var latDirection = aprsPacket.Substring(14, 1);
-                dataPoint.Latitude = String.Concat(latDegrees, "° ", latMinutes, "' ", latDirection);
-
-                var longDegrees = aprsPacket.Substring(16, 3);
-                var longMinutes = aprsPacket.Substring(19, 5);
-                var longDirection = aprsPacket.Substring(24, 1);
-                dataPoint.Longitude = String.Concat(longDegrees, "° ", longMinutes, "' ", longDirection);
-
-                // Parse course and speed
-                string courseStr = aprsPacket.Substring(26, 3);
-                dataPoint.Course = Convert.ToInt32(courseStr);
-
-                string speedStr = aprsPacket.Substring(30, 3);
-                dataPoint.Speed = Convert.ToInt32(speedStr);
-
-                // Get remaining telemetry which is slash separated
-                string[] telemetryPoints = aprsPacket.Substring(34).Split('/');
-
-                foreach (string tPoint in telemetryPoints)
-                {
-                    var dataTuple = tPoint.Split('=');
-                    switch (dataTuple[0])
-                    {
-                        case "A":
-                            dataPoint.Altitude = Convert.ToInt32(dataTuple[1]);
-                            if (numPacketsReceived > 1)
-                            {
-                                int altitudeGain = dataPoint.Altitude - lastAltitudeReading;
-                                double ascentRate = altitudeGain / elapsedTimeBetweenPackets.TotalSeconds;
-                                dataPoint.AscentRate = ascentRate;
-                            }
-                            else
-                            {
-                                dataPoint.AscentRate = 0;
-                            }                            
-                            lastAltitudeReading = dataPoint.Altitude;
-                            break;
-
-                        case "Amax":
-                            dataPoint.MaxAltitude = Convert.ToInt32(dataTuple[1]);
-                            break;
-
-                        case "Pa":
-                            dataPoint.Pressure = Convert.ToInt32(dataTuple[1]);
-                            break;
-
-                        case "Rh":
-                            dataPoint.RelativeHumidity = Convert.ToInt32(dataTuple[1]);
-                            break;
-
-                        case "Ti":
-                            dataPoint.TemperatureIn = Convert.ToDouble(dataTuple[1]);
-                            break;
-
-                        case "Te":
-                            dataPoint.TemperatureOut = Convert.ToDouble(dataTuple[1]);
-                            break;
-
-                        case "Vb":
-                            dataPoint.BatteryVoltage = Convert.ToDouble(dataTuple[1]);
-                            break;
-
-                        case "i":
-                            dataPoint.PacketIndex = Convert.ToInt32(dataTuple[1]);
-                            break;
-
-                        default:
-                            break;
-                    }
-                }
-
-
-                e.Result = dataPoint;
-
+                elapsedTimeBetweenPackets = thisPacketTimestamp - lastPacketTimestamp;
             }
-            catch (Exception)
+            lastPacketTimestamp = thisPacketTimestamp;
+
+            // Parse Lat/Lon
+            var latDegrees = aprsPacket.Substring(7, 2);
+            var latMinutes = aprsPacket.Substring(9, 5);
+            var latDirection = aprsPacket.Substring(14, 1);
+            dataPoint.Latitude = String.Concat(latDegrees, "° ", latMinutes, "' ", latDirection);
+
+            var longDegrees = aprsPacket.Substring(16, 3);
+            var longMinutes = aprsPacket.Substring(19, 5);
+            var longDirection = aprsPacket.Substring(24, 1);
+            dataPoint.Longitude = String.Concat(longDegrees, "° ", longMinutes, "' ", longDirection);
+
+            // Parse course and speed
+            string courseStr = aprsPacket.Substring(26, 3);
+            dataPoint.Course = Convert.ToInt32(courseStr);
+
+            string speedStr = aprsPacket.Substring(30, 3);
+            dataPoint.Speed = Convert.ToInt32(speedStr);
+
+            // Get remaining telemetry which is slash separated
+            string[] telemetryPoints = aprsPacket.Substring(34).Split('/');
+
+            foreach (string tPoint in telemetryPoints)
             {
-                numPacketsReceived--;
-                MessageBox.Show("Unable to parse packet.", "Mangled Packet",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                var dataTuple = tPoint.Split('=');
+                switch (dataTuple[0])
+                {
+                    case "A":
+                        dataPoint.Altitude = Convert.ToInt32(dataTuple[1]);
+                        if (numPacketsReceived > 1)
+                        {
+                            int altitudeGain = dataPoint.Altitude - lastAltitudeReading;
+                            double ascentRate = altitudeGain / elapsedTimeBetweenPackets.TotalSeconds;
+                            dataPoint.AscentRate = ascentRate;
+                        }
+                        else
+                        {
+                            dataPoint.AscentRate = 0;
+                        }                            
+                        lastAltitudeReading = dataPoint.Altitude;
+                        break;
+
+                    case "Amax":
+                        dataPoint.MaxAltitude = Convert.ToInt32(dataTuple[1]);
+                        break;
+
+                    case "Pa":
+                        dataPoint.Pressure = Convert.ToInt32(dataTuple[1]);
+                        break;
+
+                    case "Rh":
+                        dataPoint.RelativeHumidity = Convert.ToInt32(dataTuple[1]);
+                        break;
+
+                    case "Ti":
+                        dataPoint.TemperatureIn = Convert.ToDouble(dataTuple[1]);
+                        break;
+
+                    case "Te":
+                        dataPoint.TemperatureOut = Convert.ToDouble(dataTuple[1]);
+                        break;
+
+                    case "Vb":
+                        dataPoint.BatteryVoltage = Convert.ToDouble(dataTuple[1]);
+                        break;
+
+                    case "i":
+                        dataPoint.PacketIndex = Convert.ToInt32(dataTuple[1]);
+                        break;
+
+                    default:
+                        break;
+                }
             }
+
+            e.Result = dataPoint;          
         }
 
         private void PacketParser_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (e.Result == null) { return; }
-
             // Update the UI with the telemetry data.
             var dataPoint = e.Result as DataPoint;
 
