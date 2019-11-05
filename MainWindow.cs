@@ -255,61 +255,62 @@ namespace BalloonTracker
             // Set up the TCP connection to the TNC
             string server = "127.0.0.1";
             Int32 port = 8001;
-            TcpClient client = new TcpClient(server, port);
-            NetworkStream stream = client.GetStream();
-
-            var loop = true;
-
-            while (loop)
+            using (TcpClient client = new TcpClient(server, port))
             {
-                // Buffer to store the incoming KISS frame.
-                Byte[] KISSFrame = new Byte[256];
+                NetworkStream stream = client.GetStream();
 
-                // Read the input from TCP localhost and return byte count.
-                Int32 bytes = stream.Read(KISSFrame, 0, KISSFrame.Length);                    
-                    
-                Byte[] srcAddressRaw = new Byte[7];  // APRS src addr raw from KISS
-                Byte[] srcAddressBytes = new Byte[6];     // APRS src addr w/o SSID
-                Byte SSID = new Byte();                 // APRS src addr SSID
-                Byte SSIDMask = 0x1E;                   // Bitmask for AX.25 SSID field
-                int srcAddressOffset = 9;                  // KISS byte number for src addr
+                var loop = true;
 
-                // Collect the source address bytes and convert to ASCII
-                for (int pos = 0; pos < 7; pos++)
+                while (loop)
                 {
-                    // Get the raw src addr bytes from the KISS frame
-                    srcAddressRaw[pos] = KISSFrame[pos + srcAddressOffset];
-                    if (pos < 6)
-                    {
-                        // Bit-shift the first 6 bytes right 1 position for address
-                        srcAddressBytes[pos] = (Byte)(srcAddressRaw[pos] >> 1);
-                    }
-                    else if (pos == 6)
-                    {
-                        // Use the SSID mask to recover the SSID from the AX.25 frame
-                        // The field has 3 bits reserved, then 4-bits for SSID, then 1 reserved
-                        // xxxSSIDx
-                        SSID = (byte)((srcAddressRaw[pos] & SSIDMask) >> 1);
-                    }
-                }
-                // Convert to human-readable formats :)
-                String srcAddress = Encoding.ASCII.GetString(srcAddressBytes);
-                String srcSSID    = SSID.ToString();
-                String srcAddrWSSID  = srcAddress + "-" + srcSSID;
-                String wholeFrame = Encoding.UTF8.GetString(KISSFrame, 0, bytes - 1);
-                    
-                int index = wholeFrame.IndexOf('/');
-                string aprsPayload = wholeFrame.Substring(index + 1);
+                    // Buffer to store the incoming KISS frame.
+                    Byte[] KISSFrame = new Byte[256];
 
-                if (srcAddrWSSID == balloonAddrWSSID)
-                {
-                    // OK, we got a packet to display, stop looping.
-                    loop = false;
-                    // Set the results and let's exit.
-                    e.Result = aprsPayload;
+                    // Read the input from TCP localhost and return byte count.
+                    Int32 bytes = stream.Read(KISSFrame, 0, KISSFrame.Length);
+
+                    Byte[] srcAddressRaw = new Byte[7];  // APRS src addr raw from KISS
+                    Byte[] srcAddressBytes = new Byte[6];     // APRS src addr w/o SSID
+                    Byte SSID = new Byte();                 // APRS src addr SSID
+                    Byte SSIDMask = 0x1E;                   // Bitmask for AX.25 SSID field
+                    int srcAddressOffset = 9;                  // KISS byte number for src addr
+
+                    // Collect the source address bytes and convert to ASCII
+                    for (int pos = 0; pos < 7; pos++)
+                    {
+                        // Get the raw src addr bytes from the KISS frame
+                        srcAddressRaw[pos] = KISSFrame[pos + srcAddressOffset];
+                        if (pos < 6)
+                        {
+                            // Bit-shift the first 6 bytes right 1 position for address
+                            srcAddressBytes[pos] = (Byte)(srcAddressRaw[pos] >> 1);
+                        }
+                        else if (pos == 6)
+                        {
+                            // Use the SSID mask to recover the SSID from the AX.25 frame
+                            // The field has 3 bits reserved, then 4-bits for SSID, then 1 reserved
+                            // xxxSSIDx
+                            SSID = (byte)((srcAddressRaw[pos] & SSIDMask) >> 1);
+                        }
+                    }
+                    // Convert to human-readable formats :)
+                    String srcAddress = Encoding.ASCII.GetString(srcAddressBytes);
+                    String srcSSID = SSID.ToString();
+                    String srcAddrWSSID = srcAddress + "-" + srcSSID;
+                    String wholeFrame = Encoding.UTF8.GetString(KISSFrame, 0, bytes - 1);
+
+                    int index = wholeFrame.IndexOf('/');
+                    string aprsPayload = wholeFrame.Substring(index + 1);
+
+                    if (srcAddrWSSID == balloonAddrWSSID)
+                    {
+                        // OK, we got a packet to display, stop looping.
+                        loop = false;
+                        // Set the results and let's exit.
+                        e.Result = aprsPayload;
+                    }
                 }
             }
-            
             
         }
 
