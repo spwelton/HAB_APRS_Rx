@@ -779,7 +779,7 @@
             // toolStripStatusLabel2
             // 
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(1193, 37);
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(1154, 37);
             this.toolStripStatusLabel2.Spring = true;
             // 
             // preferencesButton
