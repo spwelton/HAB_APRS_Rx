@@ -107,6 +107,7 @@
   <ItemGroup>
     <Content Include="compass-arrow.bmp" />
     <None Include="pointer-arrow.png" />
+    <Content Include="Icons.ico" />
     <Content Include="pointer-arrow.svg" />
     <None Include="Resources\compassArrow.bmp" />
   </ItemGroup>

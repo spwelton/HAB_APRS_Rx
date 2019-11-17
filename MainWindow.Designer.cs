@@ -779,7 +779,7 @@
             // toolStripStatusLabel2
             // 
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(1154, 37);
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(1193, 37);
             this.toolStripStatusLabel2.Spring = true;
             // 
             // preferencesButton
@@ -828,7 +828,7 @@
             this.Controls.Add(this.mainLayoutPanel);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "MainWindow";
-            this.Text = "HAB Telemetry";
+            this.Text = "Telemetry Viewer";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.positionGroup.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);

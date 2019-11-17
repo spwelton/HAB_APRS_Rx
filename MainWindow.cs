@@ -68,6 +68,30 @@ namespace BalloonTracker
             speedGauge.FromValue = 0;
             speedGauge.ToValue = 100;
             speedGauge.Wedge = 270;
+            speedGauge.Sections.Add(
+                new AngularSection
+                {
+                    FromValue = 0,
+                    ToValue = 60,
+                    Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 0, 255, 0))
+                }
+            );
+            speedGauge.Sections.Add(
+                new AngularSection
+                {
+                    FromValue = 60,
+                    ToValue = 75,
+                    Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 255, 0))
+                }
+            );
+            speedGauge.Sections.Add(
+                new AngularSection
+                {
+                    FromValue = 75,
+                    ToValue = 100,
+                    Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 255, 0, 0))
+                }
+            );
 
             // Set up the graphs
 
