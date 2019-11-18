@@ -407,7 +407,7 @@
             // 
             // compass
             // 
-            this.compass.BackgroundImage = global::BalloonTracker.Properties.Resources.pointer_arrow;
+            this.compass.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("compass.BackgroundImage")));
             this.compass.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.compass.Dock = System.Windows.Forms.DockStyle.Fill;
             this.compass.Location = new System.Drawing.Point(795, 10);
@@ -827,6 +827,7 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.mainLayoutPanel);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainWindow";
             this.Text = "Telemetry Viewer";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

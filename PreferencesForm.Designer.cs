@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PreferencesForm));
             this.balloonSSIDBox = new System.Windows.Forms.NumericUpDown();
             this.balloonSSIDLbl = new System.Windows.Forms.Label();
             this.balloonCallsignBox = new System.Windows.Forms.TextBox();
@@ -117,6 +118,7 @@
             this.Controls.Add(this.cancelBtn);
             this.Controls.Add(this.saveBtn);
             this.Controls.Add(this.balloonTrackerDataGrpBox);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "PreferencesForm";
             this.Text = "Preferences";
             this.Load += new System.EventHandler(this.PreferencesForm_Load);
