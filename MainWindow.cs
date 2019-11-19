@@ -44,10 +44,6 @@ namespace BalloonTracker
 
             // Set up the UI elements and gauges
 
-            balloonAddress = Properties.Settings.Default.balloonCallSign;
-            balloonSSID = Properties.Settings.Default.balloonSSID;
-            balloonAddrWSSID = balloonAddress + "-" + balloonSSID;
-
             pressureGauge.From = 0;
             pressureGauge.To = 1;
 
@@ -289,6 +285,11 @@ namespace BalloonTracker
 
                     while (loop)
                     {
+                        // Re-read the Address and SSID properties in case they changed.
+                        balloonAddress = Properties.Settings.Default.balloonCallSign;
+                        balloonSSID = Properties.Settings.Default.balloonSSID;
+                        balloonAddrWSSID = balloonAddress + "-" + balloonSSID;
+
                         // Buffer to store the incoming KISS frame.
                         Byte[] KISSFrame = new Byte[256];
 
