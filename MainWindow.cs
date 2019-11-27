@@ -219,7 +219,7 @@ namespace BalloonTracker
             batteryVoltageChart.Series.Add(BatteryVoltageGraphSeries[0]);
             batteryVoltageChart.AxisY.Add(new Axis { });
             batteryVoltageChart.AxisX.Add(new Axis { });
-            batteryVoltageChart.AxisY[0].MinValue = 0;
+            batteryVoltageChart.AxisY[0].MinValue = 2;
             batteryVoltageChart.AxisY[0].MaxValue = 3;
             batteryVoltageChart.AxisY[0].Separator.Step = 0.5;
 
