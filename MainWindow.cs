@@ -443,7 +443,7 @@ namespace BalloonTracker
                         if (numPacketsReceived > 1)
                         {
                             int altitudeGain = dataPoint.Altitude - lastAltitudeReading;
-                            double ascentRate = altitudeGain / elapsedTimeBetweenPackets.TotalSeconds;
+                            double ascentRate = Math.Round((altitudeGain / elapsedTimeBetweenPackets.TotalSeconds),1);
                             dataPoint.AscentRate = ascentRate;
                         }
                         else
@@ -509,7 +509,7 @@ namespace BalloonTracker
             AltitudeGraphSeries[0].Values.Add(dataPoint.Altitude);
             maxAltBox.Text = dataPoint.MaxAltitude.ToString();
 
-            ascentRateBox.Text = dataPoint.AscentRate.ToString();
+            ascentRateBox.Text = dataPoint.AscentRate.ToString("F1");
             AscentRateGraphSeries[0].Values.Add(dataPoint.AscentRate);
 
             // Convert the pressure units in Pa to atm and round to 2 decimal places.
