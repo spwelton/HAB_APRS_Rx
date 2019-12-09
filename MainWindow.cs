@@ -25,6 +25,7 @@ namespace BalloonTracker
         public DateTime lastPacketTimestamp;
         public DateTime thisPacketTimestamp;
         public int numPacketsReceived = 0;
+        public int firstPacketReceived;
         public double packetSuccessRate;
         public TimeSpan elapsedTimeBetweenPackets;
         public int lastAltitudeReading;
@@ -479,6 +480,10 @@ namespace BalloonTracker
 
                     case "i":
                         dataPoint.PacketIndex = Convert.ToInt32(dataTuple[1]);
+                        if (numPacketsReceived == 1)
+                        {
+                            firstPacketReceived = dataPoint.PacketIndex;
+                        }
                         break;
 
                     default:
@@ -536,9 +541,11 @@ namespace BalloonTracker
                 compass.BackgroundImage = newBmp;
             }
 
+            // TODO: Test this with radios
             packetsRxLbl.Text = dataPoint.PacketsReceived.ToString();
-            packetsExpectedLbl.Text = dataPoint.PacketIndex.ToString();
-            packetSuccessLbl.Text = (((double)dataPoint.PacketsReceived / (double)dataPoint.PacketIndex) * 100.0).ToString("F1");
+            int packetsExpected = dataPoint.PacketIndex + 1 - firstPacketReceived;
+            packetsExpectedLbl.Text = packetsExpected.ToString();
+            packetSuccessLbl.Text = (((double)dataPoint.PacketsReceived / (double)packetsExpected) * 100.0).ToString("F1");
         }
 
         private Bitmap RotateImage(Bitmap b, float angle)
