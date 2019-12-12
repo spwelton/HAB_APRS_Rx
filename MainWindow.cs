@@ -13,6 +13,7 @@ using LiveCharts; //Core of the library
 using LiveCharts.Wpf; //The WPF controls
 using LiveCharts.WinForms; //the WinForm wrappers
 using System.Drawing.Drawing2D;
+using System.Reflection;
 
 namespace BalloonTracker
 {
@@ -44,6 +45,9 @@ namespace BalloonTracker
             InitializeComponent();
 
             // Set up the UI elements and gauges
+
+            Version version = Assembly.GetExecutingAssembly().GetName().Version;
+            this.Text = "HAB Telemetry Viewer v. " + version.Major + "." + version.Minor + "." + version.Build;
 
             pressureGauge.From = 0;
             pressureGauge.To = 1;
