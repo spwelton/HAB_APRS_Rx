@@ -14,6 +14,9 @@ using LiveCharts.Wpf; //The WPF controls
 using LiveCharts.WinForms; //the WinForm wrappers
 using System.Drawing.Drawing2D;
 using System.Reflection;
+using CsvHelper;
+using System.IO;
+using System.Globalization;
 
 namespace BalloonTracker
 {
@@ -30,6 +33,9 @@ namespace BalloonTracker
         public double packetSuccessRate;
         public TimeSpan elapsedTimeBetweenPackets;
         public int lastAltitudeReading;
+        public List<DataPoint> records = new List<DataPoint> { };
+        public String csvFileDir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\Desktop\\";
+        public String csvFilepath;
 
         public SeriesCollection PressureGraphSeries { get; set; }
         public SeriesCollection HumidityGraphSeries { get; set; }
@@ -43,6 +49,11 @@ namespace BalloonTracker
         public MainWindow()
         {
             InitializeComponent();
+
+            // Get the current date and time to build a filename for the CSV export
+            String startupTimestamp = DateTime.Now.ToString("yyyyMMddTHHmmssZ");
+            String csvFilename = "balloonLog_" + startupTimestamp + ".csv";
+            csvFilepath = csvFileDir + csvFilename;
 
             // Set up the UI elements and gauges
 
@@ -545,11 +556,18 @@ namespace BalloonTracker
                 compass.BackgroundImage = newBmp;
             }
 
-            // TODO: Test this with radios
             packetsRxLbl.Text = dataPoint.PacketsReceived.ToString();
             int packetsExpected = dataPoint.PacketIndex + 1 - firstPacketReceived;
             packetsExpectedLbl.Text = packetsExpected.ToString();
             packetSuccessLbl.Text = (((double)dataPoint.PacketsReceived / (double)packetsExpected) * 100.0).ToString("F1");
+
+            records.Add(dataPoint);
+
+            using (var writer = new StreamWriter(csvFilepath)) 
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            {
+                csv.WriteRecords(records);
+            }
         }
 
         private Bitmap RotateImage(Bitmap b, float angle)
